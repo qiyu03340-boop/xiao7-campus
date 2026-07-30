@@ -12,7 +12,7 @@
   <link rel="apple-touch-icon" href="assets/icons/icon-192.png">
   <meta name="theme-color" content="#9f1f2d">
   <meta name="description" content="小7校园AI——广东岭南职业技术学院清远校区新生服务、校园智能知识库与学姐人工核实平台">
-  <title>小7校园AI｜清远校区新生助手 v2.7.3</title>
+  <title>小7校园AI｜清远校区新生助手 v2.7.9</title>
   <style>
     :root{
       --hero-image:url("assets/images/img-001-432950b3c185.webp");
@@ -734,10 +734,17 @@
     body{
       min-height:var(--viewport-h);
       overflow-x:hidden;
-      overscroll-behavior-y:none;
+      overscroll-behavior-y:auto;
     }
     img,video,canvas{max-width:100%;height:auto}
-    button,a,input{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+    /*
+      微信内置浏览器兼容：
+      部分 WebView 会把大面积 button/a 上的 manipulation 误判为纯点击手势，
+      导致从卡片区域起手时单指无法带动页面。让页面与交互控件使用浏览器原生
+      触摸判断；仅在真正的纵向滚动容器上明确允许 pan-y。
+    */
+    html,body,.app-shell,.page{touch-action:auto}
+    button,a,input{touch-action:auto;-webkit-tap-highlight-color:transparent}
     button,a{user-select:none;-webkit-user-select:none}
     input,textarea{user-select:text;-webkit-user-select:text}
     :focus-visible{outline:3px solid rgba(165,31,45,.28);outline-offset:3px}
@@ -774,7 +781,10 @@
       overscroll-behavior-x:contain;
     }
     .quick-chips>* ,.guide-filters>* ,.ai-quick>* ,.campus-filter-bar>*{scroll-snap-align:start}
-    .chat-scroll,.packing-list-body,.sheet,.faq-list{-webkit-overflow-scrolling:touch}
+    .chat-scroll,.packing-list-body,.sheet,.faq-list{
+      touch-action:pan-y;
+      -webkit-overflow-scrolling:touch;
+    }
     #aiPage{height:calc(var(--viewport-h) - var(--shell-gap))}
     .ai-layout{height:calc(var(--viewport-h) - var(--shell-gap) - var(--nav-h) - env(safe-area-inset-bottom))}
     .ai-input{padding-bottom:calc(10px + env(safe-area-inset-bottom))}
