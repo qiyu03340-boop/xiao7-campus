@@ -12,10 +12,13 @@
   <link rel="apple-touch-icon" href="assets/icons/icon-192.png">
   <meta name="theme-color" content="#9f1f2d">
   <meta name="description" content="小7校园AI——广东岭南职业技术学院清远校区新生服务、校园智能知识库与学姐人工核实平台">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="dns-prefetch" href="//cdn.jsdelivr.net">
+  <link rel="preload" as="image" href="assets/images/home-hero-school-gate.jpg" fetchpriority="high">
   <title>小7校园AI｜清远校区新生助手 v2.7.9</title>
   <style>
     :root{
-      --hero-image:url("assets/images/img-001-432950b3c185.webp");
+      --hero-image:url("assets/images/home-hero-school-gate.jpg");
       --red:#a51f2d;
       --red-2:#c23a45;
       --red-dark:#6f1420;
@@ -923,6 +926,96 @@
       .service-grid-four{grid-template-columns:repeat(4,minmax(0,1fr));max-width:1040px}
       .service-list-four{grid-template-columns:repeat(4,minmax(0,1fr))}
     }
+
+    /*
+      微信内置浏览器使用独立主滚动容器：
+      避免 WebView 把 body 的单指手势交给外层页面，出现只能双指滚动。
+    */
+    html,body{height:100%;overflow:hidden}
+    .app-shell{
+      height:calc(var(--viewport-h) - var(--shell-gap));
+      min-height:0;
+      overflow-x:hidden;
+      overflow-y:auto;
+      overscroll-behavior-y:auto;
+      touch-action:pan-x pan-y;
+      -webkit-overflow-scrolling:touch;
+    }
+    /*
+      首页全幅连续背景：顶部使用清晰校门图，内容区继续保留同一图片，
+      仅用岭南红渐变增强文字与卡片的可读性。
+    */
+    #homePage{
+      position:relative;
+      isolation:isolate;
+      overflow:hidden;
+      background:#5b0e1a;
+    }
+    #homePage:before,
+    #homePage:after{
+      content:"";
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+    }
+    #homePage:before{
+      z-index:0;
+      background-image:var(--hero-image);
+      background-size:cover;
+      background-position:center top;
+      background-repeat:no-repeat;
+      filter:saturate(.9) brightness(.68);
+      opacity:.56;
+    }
+    #homePage:after{
+      z-index:0;
+      background:linear-gradient(180deg,rgba(35,15,20,.02) 0%,rgba(75,12,23,.16) 32%,rgba(91,14,26,.76) 60%,#5b0e1a 100%);
+    }
+    #homePage>.hero,
+    #homePage>.home-content{
+      position:relative;
+      z-index:1;
+    }
+    #homePage .home-content{background:transparent}
+    #homePage .section-title h2{color:#fff}
+    #homePage .section-title span{color:rgba(255,244,240,.76)}
+    /* 参考沉浸式校园首页：完整竖图、红色渐变、标题与功能卡片叠加。 */
+    @media(max-width:699px){
+      .hero{
+        min-height:calc(min(133.333vw,693.333px) + 360px);
+        background-image:
+          linear-gradient(180deg,rgba(17,23,30,.02) 0%,rgba(17,23,30,.06) 42%,rgba(103,19,32,.52) 60%,rgba(113,21,34,.94) 76%,#5b0e1a 100%),
+          var(--hero-image);
+        background-size:100% 100%,100% auto;
+        background-position:center center,center top;
+        background-repeat:no-repeat,no-repeat;
+        background-color:#5b0e1a;
+      }
+      .hero:after{height:48%;background:linear-gradient(180deg,transparent,rgba(63,8,17,.42))}
+      .hero-copy{
+        top:clamp(336px,105vw,548px);
+        bottom:auto;
+      }
+      .hero-actions{
+        top:calc(min(133.333vw,693.333px) + 70px);
+        bottom:auto;
+      }
+      #homePage .home-content{
+        position:relative;
+        z-index:4;
+        margin-top:-155px;
+      }
+      #homePage .ai-entry{
+        margin-top:0;
+        background:rgba(255,253,250,.97);
+        box-shadow:0 20px 42px rgba(56,8,16,.28);
+      }
+    }
+    @media(max-width:359px){
+      .hero{min-height:calc(133.333vw + 430px)}
+      .hero-actions{top:calc(133.333vw + 90px)}
+      #homePage .home-content{margin-top:-170px}
+    }
   </style>
   <!-- v2.6.7: added senior opening experience card and modal -->
 </head>
@@ -1308,7 +1401,7 @@
         <div class="campus-gallery-stack campus-v239">
           <div class="campus-preview-grid is-three" aria-label="校园实景分类预览">
             <button class="campus-preview-card campus-preview-action" type="button" data-campus-preview-filter="street" aria-label="查看商业街美食5张校园实景">
-              <img src="assets/images/img-002-989dfa72d81a.webp" alt="商业街美食" loading="lazy" decoding="async">
+              <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-002-989dfa72d81a.webp" alt="商业街美食" loading="eager" decoding="async">
               <span class="campus-photo-shade"></span>
               <span class="campus-preview-copy">
                 <span class="campus-preview-tag">商业街</span>
@@ -1317,7 +1410,7 @@
               </span>
             </button>
             <button class="campus-preview-card campus-preview-action" type="button" data-campus-preview-filter="building" aria-label="查看教学楼群8张校园实景">
-              <img src="assets/images/img-003-d461375acd20.webp" alt="教学楼群" loading="lazy" decoding="async">
+              <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-003-d461375acd20.webp" alt="教学楼群" loading="eager" decoding="async">
               <span class="campus-photo-shade"></span>
               <span class="campus-preview-copy">
                 <span class="campus-preview-tag">教学楼群</span>
@@ -1326,7 +1419,7 @@
               </span>
             </button>
             <button class="campus-preview-card campus-preview-action" type="button" data-campus-preview-filter="facility" aria-label="查看文体设施17张校园实景">
-              <img src="assets/images/img-004-edd360fb0238.webp" alt="文体设施" loading="lazy" decoding="async">
+              <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-004-edd360fb0238.webp" alt="文体设施" loading="eager" decoding="async">
               <span class="campus-photo-shade"></span>
               <span class="campus-preview-copy">
                 <span class="campus-preview-tag">文体设施</span>
@@ -1360,7 +1453,7 @@
             </div>
             <div class="campus-grid" aria-live="polite">
               <button class="campus-photo-card" type="button" data-campus-category="street" data-campus-title="肯德基" data-campus-note="商业街">
-                <img src="assets/images/img-002-989dfa72d81a.webp" alt="肯德基" loading="lazy" decoding="async">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-002-989dfa72d81a.webp" alt="肯德基" loading="eager" decoding="async">
                 <span class="campus-photo-shade"></span>
                 <span class="campus-photo-copy">
                   <span class="campus-photo-tag">商业街</span>
@@ -1370,7 +1463,7 @@
                 <span class="campus-photo-zoom" aria-hidden="true">+</span>
               </button>
               <button class="campus-photo-card" type="button" data-campus-category="street" data-campus-title="蜜雪冰城" data-campus-note="商业街">
-                <img src="assets/images/img-005-7b631d61838a.webp" alt="蜜雪冰城" loading="lazy" decoding="async">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-005-7b631d61838a.webp" alt="蜜雪冰城" loading="eager" decoding="async">
                 <span class="campus-photo-shade"></span>
                 <span class="campus-photo-copy">
                   <span class="campus-photo-tag">商业街</span>
@@ -1380,7 +1473,7 @@
                 <span class="campus-photo-zoom" aria-hidden="true">+</span>
               </button>
               <button class="campus-photo-card" type="button" data-campus-category="street" data-campus-title="疯狂烤鸡" data-campus-note="商业街">
-                <img src="assets/images/img-006-f5473da1f7a6.webp" alt="疯狂烤鸡" loading="lazy" decoding="async">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-006-f5473da1f7a6.webp" alt="疯狂烤鸡" loading="eager" decoding="async">
                 <span class="campus-photo-shade"></span>
                 <span class="campus-photo-copy">
                   <span class="campus-photo-tag">商业街</span>
@@ -1390,7 +1483,7 @@
                 <span class="campus-photo-zoom" aria-hidden="true">+</span>
               </button>
               <button class="campus-photo-card" type="button" data-campus-category="building" data-campus-title="40号楼" data-campus-note="校园楼栋外景">
-                <img src="assets/images/img-007-5e3e1f1769c0.webp" alt="40号楼" loading="lazy" decoding="async">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-007-5e3e1f1769c0.webp" alt="40号楼" loading="eager" decoding="async">
                 <span class="campus-photo-shade"></span>
                 <span class="campus-photo-copy">
                   <span class="campus-photo-tag">教学楼群</span>
@@ -1400,7 +1493,7 @@
                 <span class="campus-photo-zoom" aria-hidden="true">+</span>
               </button>
               <button class="campus-photo-card" type="button" data-campus-category="building" data-campus-title="工匠楼" data-campus-note="教学楼外景">
-                <img src="assets/images/img-008-162e261a52cf.webp" alt="工匠楼" loading="lazy" decoding="async">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-008-162e261a52cf.webp" alt="工匠楼" loading="eager" decoding="async">
                 <span class="campus-photo-shade"></span>
                 <span class="campus-photo-copy">
                   <span class="campus-photo-tag">教学楼群</span>
@@ -1410,7 +1503,7 @@
                 <span class="campus-photo-zoom" aria-hidden="true">+</span>
               </button>
               <button class="campus-photo-card" type="button" data-campus-category="building" data-campus-title="勤政楼" data-campus-note="行政办公楼外景">
-                <img src="assets/images/img-009-b089ab498b07.webp" alt="勤政楼" loading="lazy" decoding="async">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-009-b089ab498b07.webp" alt="勤政楼" loading="eager" decoding="async">
                 <span class="campus-photo-shade"></span>
                 <span class="campus-photo-copy">
                   <span class="campus-photo-tag">教学楼群</span>
@@ -1420,7 +1513,7 @@
                 <span class="campus-photo-zoom" aria-hidden="true">+</span>
               </button>
               <button class="campus-photo-card" type="button" data-campus-category="building" data-campus-title="药学楼" data-campus-note="教学楼外景">
-                <img src="assets/images/img-003-d461375acd20.webp" alt="药学楼" loading="lazy" decoding="async">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-003-d461375acd20.webp" alt="药学楼" loading="eager" decoding="async">
                 <span class="campus-photo-shade"></span>
                 <span class="campus-photo-copy">
                   <span class="campus-photo-tag">教学楼群</span>
@@ -1430,7 +1523,7 @@
                 <span class="campus-photo-zoom" aria-hidden="true">+</span>
               </button>
               <button class="campus-photo-card" type="button" data-campus-category="building" data-campus-title="博雅A" data-campus-note="在药学楼对面">
-                <img src="assets/images/img-010-8f62c7af1a19.webp" alt="博雅A" loading="lazy" decoding="async">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-010-8f62c7af1a19.webp" alt="博雅A" loading="eager" decoding="async">
                 <span class="campus-photo-shade"></span>
                 <span class="campus-photo-copy">
                   <span class="campus-photo-tag">教学楼群</span>
@@ -1440,7 +1533,7 @@
                 <span class="campus-photo-zoom" aria-hidden="true">+</span>
               </button>
               <button class="campus-photo-card" type="button" data-campus-category="building" data-campus-title="博雅C" data-campus-note="教学楼外景">
-                <img src="assets/images/img-011-17d8af1009ec.webp" alt="博雅C" loading="lazy" decoding="async">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-011-17d8af1009ec.webp" alt="博雅C" loading="eager" decoding="async">
                 <span class="campus-photo-shade"></span>
                 <span class="campus-photo-copy">
                   <span class="campus-photo-tag">教学楼群</span>
@@ -1450,7 +1543,7 @@
                 <span class="campus-photo-zoom" aria-hidden="true">+</span>
               </button>
               <button class="campus-photo-card" type="button" data-campus-category="building" data-campus-title="博雅D" data-campus-note="教学楼外景">
-                <img src="assets/images/img-012-750c0ef7bda7.webp" alt="博雅D" loading="lazy" decoding="async">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-012-750c0ef7bda7.webp" alt="博雅D" loading="eager" decoding="async">
                 <span class="campus-photo-shade"></span>
                 <span class="campus-photo-copy">
                   <span class="campus-photo-tag">教学楼群</span>
@@ -1460,7 +1553,7 @@
                 <span class="campus-photo-zoom" aria-hidden="true">+</span>
               </button>
               <button class="campus-photo-card" type="button" data-campus-category="facility" data-campus-title="岭南影院" data-campus-note="内部场景">
-                <img src="assets/images/img-013-2f6c07652ab3.webp" alt="岭南影院" loading="lazy" decoding="async">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-013-2f6c07652ab3.webp" alt="岭南影院" loading="eager" decoding="async">
                 <span class="campus-photo-shade"></span>
                 <span class="campus-photo-copy">
                   <span class="campus-photo-tag">文体设施</span>
@@ -1470,7 +1563,7 @@
                 <span class="campus-photo-zoom" aria-hidden="true">+</span>
               </button>
               <button class="campus-photo-card" type="button" data-campus-category="facility" data-campus-title="篮球场" data-campus-note="运动场地">
-                <img src="assets/images/img-014-479036d04413.webp" alt="篮球场" loading="lazy" decoding="async">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-014-479036d04413.webp" alt="篮球场" loading="eager" decoding="async">
                 <span class="campus-photo-shade"></span>
                 <span class="campus-photo-copy">
                   <span class="campus-photo-tag">文体设施</span>
@@ -1480,7 +1573,7 @@
                 <span class="campus-photo-zoom" aria-hidden="true">+</span>
               </button>
               <button class="campus-photo-card" type="button" data-campus-category="facility" data-campus-title="游泳池" data-campus-note="体育馆二楼">
-                <img src="assets/images/img-015-7fbcae09265f.webp" alt="游泳池" loading="lazy" decoding="async">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-015-7fbcae09265f.webp" alt="游泳池" loading="eager" decoding="async">
                 <span class="campus-photo-shade"></span>
                 <span class="campus-photo-copy">
                   <span class="campus-photo-tag">文体设施</span>
@@ -1490,7 +1583,7 @@
                 <span class="campus-photo-zoom" aria-hidden="true">+</span>
               </button>
               <button class="campus-photo-card" type="button" data-campus-category="facility" data-campus-title="体育馆" data-campus-note="内部场景">
-                <img src="assets/images/img-004-edd360fb0238.webp" alt="体育馆" loading="lazy" decoding="async">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-004-edd360fb0238.webp" alt="体育馆" loading="eager" decoding="async">
                 <span class="campus-photo-shade"></span>
                 <span class="campus-photo-copy">
                   <span class="campus-photo-tag">文体设施</span>
@@ -1500,7 +1593,7 @@
                 <span class="campus-photo-zoom" aria-hidden="true">+</span>
               </button>
               <button class="campus-photo-card" type="button" data-campus-category="facility" data-campus-title="乒乓球区" data-campus-note="体育馆内">
-                <img src="assets/images/img-016-ef3194c6cda8.webp" alt="乒乓球区" loading="lazy" decoding="async">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-016-ef3194c6cda8.webp" alt="乒乓球区" loading="eager" decoding="async">
                 <span class="campus-photo-shade"></span>
                 <span class="campus-photo-copy">
                   <span class="campus-photo-tag">文体设施</span>
@@ -1510,7 +1603,7 @@
                 <span class="campus-photo-zoom" aria-hidden="true">+</span>
               </button>
               <button class="campus-photo-card" type="button" data-campus-category="facility" data-campus-title="羽毛球区" data-campus-note="体育馆内">
-                <img src="assets/images/img-017-a21ddd64097d.webp" alt="羽毛球区" loading="lazy" decoding="async">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-017-a21ddd64097d.webp" alt="羽毛球区" loading="eager" decoding="async">
                 <span class="campus-photo-shade"></span>
                 <span class="campus-photo-copy">
                   <span class="campus-photo-tag">文体设施</span>
@@ -1520,7 +1613,7 @@
                 <span class="campus-photo-zoom" aria-hidden="true">+</span>
               </button>
               <button class="campus-photo-card" type="button" data-campus-category="facility" data-campus-title="健身房" data-campus-note="操场旁边">
-                <img src="assets/images/img-018-e121ce323e15.webp" alt="健身房" loading="lazy" decoding="async">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-018-e121ce323e15.webp" alt="健身房" loading="eager" decoding="async">
                 <span class="campus-photo-shade"></span>
                 <span class="campus-photo-copy">
                   <span class="campus-photo-tag">文体设施</span>
@@ -1530,7 +1623,7 @@
                 <span class="campus-photo-zoom" aria-hidden="true">+</span>
               </button>
               <button class="campus-photo-card" type="button" data-campus-category="facility" data-campus-title="游泳池" data-campus-note="校园泳池全景">
-                <img src="assets/images/img-019-3471c2501e43.webp" alt="游泳池" loading="lazy" decoding="async">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-019-3471c2501e43.webp" alt="游泳池" loading="eager" decoding="async">
                 <span class="campus-photo-shade"></span>
                 <span class="campus-photo-copy">
                   <span class="campus-photo-tag">文体设施</span>
@@ -1540,7 +1633,7 @@
                 <span class="campus-photo-zoom" aria-hidden="true">+</span>
               </button>
               <button class="campus-photo-card" type="button" data-campus-category="dormitory" data-campus-title="崇礼宿舍大门" data-campus-note="崇礼书院宿舍入口">
-                <img src="assets/images/img-020-314bdc1d2fad.webp" alt="崇礼宿舍大门" loading="lazy" decoding="async">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-020-314bdc1d2fad.webp" alt="崇礼宿舍大门" loading="eager" decoding="async">
                 <span class="campus-photo-shade"></span>
                 <span class="campus-photo-copy">
                   <span class="campus-photo-tag">宿舍书院</span>
@@ -1550,7 +1643,7 @@
                 <span class="campus-photo-zoom" aria-hidden="true">+</span>
               </button>
               <button class="campus-photo-card" type="button" data-campus-category="street" data-campus-title="商业街" data-campus-note="校园商业街实景">
-                <img src="assets/images/img-021-db02c5158021.webp" alt="商业街" loading="lazy" decoding="async">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-021-db02c5158021.webp" alt="商业街" loading="eager" decoding="async">
                 <span class="campus-photo-shade"></span>
                 <span class="campus-photo-copy">
                   <span class="campus-photo-tag">商业街</span>
@@ -1560,7 +1653,7 @@
                 <span class="campus-photo-zoom" aria-hidden="true">+</span>
               </button>
               <button class="campus-photo-card" type="button" data-campus-category="scenery" data-campus-title="猫学长" data-campus-note="校园草地上的猫咪">
-                <img src="assets/images/img-022-8bb0b5dd94a2.webp" alt="猫学长" loading="lazy" decoding="async">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-022-8bb0b5dd94a2.webp" alt="猫学长" loading="eager" decoding="async">
                 <span class="campus-photo-shade"></span>
                 <span class="campus-photo-copy">
                   <span class="campus-photo-tag">校园风景</span>
@@ -1570,7 +1663,7 @@
                 <span class="campus-photo-zoom" aria-hidden="true">+</span>
               </button>
               <button class="campus-photo-card" type="button" data-campus-category="scenery" data-campus-title="校园风景" data-campus-note="宿舍走廊夕阳">
-                <img src="assets/images/img-023-d5a005762627.webp" alt="校园风景" loading="lazy" decoding="async">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-023-d5a005762627.webp" alt="校园风景" loading="eager" decoding="async">
                 <span class="campus-photo-shade"></span>
                 <span class="campus-photo-copy">
                   <span class="campus-photo-tag">校园风景</span>
@@ -1580,7 +1673,7 @@
                 <span class="campus-photo-zoom" aria-hidden="true">+</span>
               </button>
               <button class="campus-photo-card" type="button" data-campus-category="scenery" data-campus-title="校园风景" data-campus-note="校园晚霞">
-                <img src="assets/images/img-024-35713c29c686.webp" alt="校园风景" loading="lazy" decoding="async">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-024-35713c29c686.webp" alt="校园风景" loading="eager" decoding="async">
                 <span class="campus-photo-shade"></span>
                 <span class="campus-photo-copy">
                   <span class="campus-photo-tag">校园风景</span>
@@ -1590,7 +1683,7 @@
                 <span class="campus-photo-zoom" aria-hidden="true">+</span>
               </button>
               <button class="campus-photo-card" type="button" data-campus-category="service" data-campus-title="学校快递站" data-campus-note="校内快递服务点">
-                <img src="assets/images/img-025-5623e35c3904.webp" alt="学校快递站" loading="lazy" decoding="async">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-025-5623e35c3904.webp" alt="学校快递站" loading="eager" decoding="async">
                 <span class="campus-photo-shade"></span>
                 <span class="campus-photo-copy">
                   <span class="campus-photo-tag">校园服务</span>
@@ -1600,7 +1693,7 @@
                 <span class="campus-photo-zoom" aria-hidden="true">+</span>
               </button>
               <button class="campus-photo-card" type="button" data-campus-category="scenery" data-campus-title="校园大门（南门）" data-campus-note="学校南门夜景">
-                <img src="assets/images/img-026-87a237fdeff7.webp" alt="校园大门（南门）" loading="lazy" decoding="async">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-026-87a237fdeff7.webp" alt="校园大门（南门）" loading="eager" decoding="async">
                 <span class="campus-photo-shade"></span>
                 <span class="campus-photo-copy">
                   <span class="campus-photo-tag">校园风景</span>
@@ -1610,7 +1703,7 @@
                 <span class="campus-photo-zoom" aria-hidden="true">+</span>
               </button>
               <button class="campus-photo-card" type="button" data-campus-category="dormitory" data-campus-title="至善书院" data-campus-note="至善书院楼栋外景">
-                <img src="assets/images/img-027-828a135553fc.webp" alt="至善书院" loading="lazy" decoding="async">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-027-828a135553fc.webp" alt="至善书院" loading="eager" decoding="async">
                 <span class="campus-photo-shade"></span>
                 <span class="campus-photo-copy">
                   <span class="campus-photo-tag">宿舍书院</span>
@@ -1620,7 +1713,7 @@
                 <span class="campus-photo-zoom" aria-hidden="true">+</span>
               </button>
               <button class="campus-photo-card" type="button" data-campus-category="scenery" data-campus-title="校园风景" data-campus-note="雨后校园道路">
-                <img src="assets/images/img-028-bd624e75f0b8.webp" alt="校园风景" loading="lazy" decoding="async">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-028-bd624e75f0b8.webp" alt="校园风景" loading="eager" decoding="async">
                 <span class="campus-photo-shade"></span>
                 <span class="campus-photo-copy">
                   <span class="campus-photo-tag">校园风景</span>
@@ -1630,7 +1723,7 @@
                 <span class="campus-photo-zoom" aria-hidden="true">+</span>
               </button>
               <button class="campus-photo-card" type="button" data-campus-category="dormitory" data-campus-title="至善书院（宿舍）" data-campus-note="宿舍内部实景">
-                <img src="assets/images/img-029-c9a46179d08b.webp" alt="至善书院（宿舍）" loading="lazy" decoding="async">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-029-c9a46179d08b.webp" alt="至善书院（宿舍）" loading="eager" decoding="async">
                 <span class="campus-photo-shade"></span>
                 <span class="campus-photo-copy">
                   <span class="campus-photo-tag">宿舍书院</span>
@@ -1640,7 +1733,7 @@
                 <span class="campus-photo-zoom" aria-hidden="true">+</span>
               </button>
               <button class="campus-photo-card" type="button" data-campus-category="facility" data-campus-title="体育馆" data-campus-note="主馆篮球场">
-                <img src="assets/images/img-030-3db98284dab2.webp" alt="体育馆" loading="lazy" decoding="async">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-030-3db98284dab2.webp" alt="体育馆" loading="eager" decoding="async">
                 <span class="campus-photo-shade"></span>
                 <span class="campus-photo-copy">
                   <span class="campus-photo-tag">文体设施</span>
@@ -1650,7 +1743,7 @@
                 <span class="campus-photo-zoom" aria-hidden="true">+</span>
               </button>
               <button class="campus-photo-card" type="button" data-campus-category="facility" data-campus-title="体育馆" data-campus-note="篮球馆入口">
-                <img src="assets/images/img-031-37b8c0897daf.webp" alt="体育馆" loading="lazy" decoding="async">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-031-37b8c0897daf.webp" alt="体育馆" loading="eager" decoding="async">
                 <span class="campus-photo-shade"></span>
                 <span class="campus-photo-copy">
                   <span class="campus-photo-tag">文体设施</span>
@@ -1660,7 +1753,7 @@
                 <span class="campus-photo-zoom" aria-hidden="true">+</span>
               </button>
               <button class="campus-photo-card" type="button" data-campus-category="service" data-campus-title="驾校（校内）" data-campus-note="校内驾校服务点">
-                <img src="assets/images/img-032-830407bc53b3.webp" alt="驾校（校内）" loading="lazy" decoding="async">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-032-830407bc53b3.webp" alt="驾校（校内）" loading="eager" decoding="async">
                 <span class="campus-photo-shade"></span>
                 <span class="campus-photo-copy">
                   <span class="campus-photo-tag">校园服务</span>
@@ -1670,7 +1763,7 @@
                 <span class="campus-photo-zoom" aria-hidden="true">+</span>
               </button>
               <button class="campus-photo-card" type="button" data-campus-category="facility" data-campus-title="健身房" data-campus-note="岭南运美健身中心前台">
-                <img src="assets/images/img-033-4c8674b562dd.webp" alt="健身房" loading="lazy" decoding="async">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-033-4c8674b562dd.webp" alt="健身房" loading="eager" decoding="async">
                 <span class="campus-photo-shade"></span>
                 <span class="campus-photo-copy">
                   <span class="campus-photo-tag">文体设施</span>
@@ -1680,7 +1773,7 @@
                 <span class="campus-photo-zoom" aria-hidden="true">+</span>
               </button>
               <button class="campus-photo-card" type="button" data-campus-category="facility" data-campus-title="健身房（入口）" data-campus-note="健身房内部入口">
-                <img src="assets/images/img-034-9adddc1e81a7.webp" alt="健身房（入口）" loading="lazy" decoding="async">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-034-9adddc1e81a7.webp" alt="健身房（入口）" loading="eager" decoding="async">
                 <span class="campus-photo-shade"></span>
                 <span class="campus-photo-copy">
                   <span class="campus-photo-tag">文体设施</span>
@@ -1690,7 +1783,7 @@
                 <span class="campus-photo-zoom" aria-hidden="true">+</span>
               </button>
               <button class="campus-photo-card" type="button" data-campus-category="facility" data-campus-title="体育馆（副馆）" data-campus-note="乒乓球训练区">
-                <img src="assets/images/img-035-37d8178395c8.webp" alt="体育馆（副馆）" loading="lazy" decoding="async">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-035-37d8178395c8.webp" alt="体育馆（副馆）" loading="eager" decoding="async">
                 <span class="campus-photo-shade"></span>
                 <span class="campus-photo-copy">
                   <span class="campus-photo-tag">文体设施</span>
@@ -1700,7 +1793,7 @@
                 <span class="campus-photo-zoom" aria-hidden="true">+</span>
               </button>
               <button class="campus-photo-card" type="button" data-campus-category="dormitory" data-campus-title="普通宿舍" data-campus-note="普通宿舍内部实景">
-                <img src="assets/images/img-036-7989089044e2.webp" alt="普通宿舍" loading="lazy" decoding="async">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-036-7989089044e2.webp" alt="普通宿舍" loading="eager" decoding="async">
                 <span class="campus-photo-shade"></span>
                 <span class="campus-photo-copy">
                   <span class="campus-photo-tag">宿舍书院</span>
@@ -1710,7 +1803,7 @@
                 <span class="campus-photo-zoom" aria-hidden="true">+</span>
               </button>
               <button class="campus-photo-card" type="button" data-campus-category="street" data-campus-title="零食店" data-campus-note="校园零食店">
-                <img src="assets/images/img-037-28721aa80ab3.webp" alt="零食店" loading="lazy" decoding="async">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-037-28721aa80ab3.webp" alt="零食店" loading="eager" decoding="async">
                 <span class="campus-photo-shade"></span>
                 <span class="campus-photo-copy">
                   <span class="campus-photo-tag">商业街</span>
@@ -1720,7 +1813,7 @@
                 <span class="campus-photo-zoom" aria-hidden="true">+</span>
               </button>
               <button class="campus-photo-card" type="button" data-campus-category="facility" data-campus-title="游泳池" data-campus-note="校园游泳池">
-                <img src="assets/images/img-038-8fc80eed074f.webp" alt="游泳池" loading="lazy" decoding="async">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-038-8fc80eed074f.webp" alt="游泳池" loading="eager" decoding="async">
                 <span class="campus-photo-shade"></span>
                 <span class="campus-photo-copy">
                   <span class="campus-photo-tag">文体设施</span>
@@ -1730,7 +1823,7 @@
                 <span class="campus-photo-zoom" aria-hidden="true">+</span>
               </button>
               <button class="campus-photo-card" type="button" data-campus-category="facility" data-campus-title="换衣间（游泳池）" data-campus-note="游泳池蓝色更衣柜">
-                <img src="assets/images/img-039-0acb5e607daa.webp" alt="换衣间（游泳池）" loading="lazy" decoding="async">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-039-0acb5e607daa.webp" alt="换衣间（游泳池）" loading="eager" decoding="async">
                 <span class="campus-photo-shade"></span>
                 <span class="campus-photo-copy">
                   <span class="campus-photo-tag">文体设施</span>
@@ -1740,7 +1833,7 @@
                 <span class="campus-photo-zoom" aria-hidden="true">+</span>
               </button>
               <button class="campus-photo-card" type="button" data-campus-category="facility" data-campus-title="游泳池（换衣间）" data-campus-note="游泳池粉色更衣柜">
-                <img src="assets/images/img-040-b6776bf355e9.webp" alt="游泳池（换衣间）" loading="lazy" decoding="async">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-040-b6776bf355e9.webp" alt="游泳池（换衣间）" loading="eager" decoding="async">
                 <span class="campus-photo-shade"></span>
                 <span class="campus-photo-copy">
                   <span class="campus-photo-tag">文体设施</span>
@@ -1750,7 +1843,7 @@
                 <span class="campus-photo-zoom" aria-hidden="true">+</span>
               </button>
               <button class="campus-photo-card" type="button" data-campus-category="building" data-campus-title="教室" data-campus-note="教室内部实景">
-                <img src="assets/images/img-041-5c4911e57fe6.webp" alt="教室" loading="lazy" decoding="async">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-041-5c4911e57fe6.webp" alt="教室" loading="eager" decoding="async">
                 <span class="campus-photo-shade"></span>
                 <span class="campus-photo-copy">
                   <span class="campus-photo-tag">教学楼群</span>
@@ -1760,7 +1853,7 @@
                 <span class="campus-photo-zoom" aria-hidden="true">+</span>
               </button>
               <button class="campus-photo-card" type="button" data-campus-category="facility" data-campus-title="健身房（门口）" data-campus-note="岭南运美健身中心门口">
-                <img src="assets/images/img-042-bba13834c7f0.webp" alt="健身房（门口）" loading="lazy" decoding="async">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-042-bba13834c7f0.webp" alt="健身房（门口）" loading="eager" decoding="async">
                 <span class="campus-photo-shade"></span>
                 <span class="campus-photo-copy">
                   <span class="campus-photo-tag">文体设施</span>
@@ -1770,7 +1863,7 @@
                 <span class="campus-photo-zoom" aria-hidden="true">+</span>
               </button>
               <button class="campus-photo-card" type="button" data-campus-category="dormitory" data-campus-title="崇礼书院" data-campus-note="书院楼入口实景">
-                <img src="assets/images/img-043-2841152d801f.webp" alt="崇礼书院" loading="lazy" decoding="async">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-043-2841152d801f.webp" alt="崇礼书院" loading="eager" decoding="async">
                 <span class="campus-photo-shade"></span>
                 <span class="campus-photo-copy">
                   <span class="campus-photo-tag">宿舍书院</span>
@@ -1780,7 +1873,7 @@
                 <span class="campus-photo-zoom" aria-hidden="true">+</span>
               </button>
               <button class="campus-photo-card" type="button" data-campus-category="dormitory" data-campus-title="励能书院" data-campus-note="书院正门实景">
-                <img src="assets/images/img-044-7bc749fabc70.webp" alt="励能书院" loading="lazy" decoding="async">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-044-7bc749fabc70.webp" alt="励能书院" loading="eager" decoding="async">
                 <span class="campus-photo-shade"></span>
                 <span class="campus-photo-copy">
                   <span class="campus-photo-tag">宿舍书院</span>
@@ -1790,7 +1883,7 @@
                 <span class="campus-photo-zoom" aria-hidden="true">+</span>
               </button>
               <button class="campus-photo-card" type="button" data-campus-category="dormitory" data-campus-title="笃学书院" data-campus-note="书院楼外景">
-                <img src="assets/images/img-045-b643037e2588.webp" alt="笃学书院" loading="lazy" decoding="async">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-045-b643037e2588.webp" alt="笃学书院" loading="eager" decoding="async">
                 <span class="campus-photo-shade"></span>
                 <span class="campus-photo-copy">
                   <span class="campus-photo-tag">宿舍书院</span>
@@ -1800,7 +1893,7 @@
                 <span class="campus-photo-zoom" aria-hidden="true">+</span>
               </button>
               <button class="campus-photo-card" type="button" data-campus-category="dormitory" data-campus-title="思诚书院" data-campus-note="书院楼栋外景">
-                <img src="assets/images/img-046-cb20befee4a9.webp" alt="思诚书院" loading="lazy" decoding="async">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-046-cb20befee4a9.webp" alt="思诚书院" loading="eager" decoding="async">
                 <span class="campus-photo-shade"></span>
                 <span class="campus-photo-copy">
                   <span class="campus-photo-tag">宿舍书院</span>
@@ -1810,7 +1903,7 @@
                 <span class="campus-photo-zoom" aria-hidden="true">+</span>
               </button>
               <button class="campus-photo-card" type="button" data-campus-category="dormitory" data-campus-title="知行书院" data-campus-note="书院中庭实景">
-                <img src="assets/images/img-047-ef84d46a7cbe.webp" alt="知行书院" loading="lazy" decoding="async">
+                <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-047-ef84d46a7cbe.webp" alt="知行书院" loading="eager" decoding="async">
                 <span class="campus-photo-shade"></span>
                 <span class="campus-photo-copy">
                   <span class="campus-photo-tag">宿舍书院</span>
@@ -1896,7 +1989,7 @@
       <div class="qr-card">
         <h3>扫码添加77学姐</h3>
         <p>建议添加时备注“学院＋问题类型”，方便更快了解你的需求。</p>
-        <img src="assets/images/img-048-b4cb425e9ff7.webp" alt="小7校园助手专用微信二维码">
+        <img src="https://cdn.jsdelivr.net/gh/qiyu03340-boop/xiao7-campus@e7052785d9af25bb2dc8cde4701bed7bbf56c369/assets/images/img-048-b4cb425e9ff7.webp" alt="小7校园助手专用微信二维码">
       </div>
       <div class="disclaimer"><strong>建议使用“小7校园助手”专用微信：</strong>添加时备注“学院＋年级＋问题”；不处理缴费转账、账号密码、验证码和其他敏感信息。<br><br>小7校园AI为学生自主创建的信息服务平台，并非学校官方系统。页面内容统一标注为“学姐个人经验+官网搜索｜仅供参考”，报到、缴费、考试、学籍、资助等事项请以学校最新通知为准。</div>
     </div>
@@ -1929,12 +2022,13 @@
 <script src="data/campus-services.js"></script>
 <script src="data/knowledge-base.js"></script>
 <script>
+const appShell=document.querySelector('.app-shell');
 const pages={home:document.getElementById('homePage'),guide:document.getElementById('guidePage'),ai:document.getElementById('aiPage'),services:document.getElementById('servicesPage'),profile:document.getElementById('profilePage')};
 const navBtns=[...document.querySelectorAll('.nav-btn')];
 function openTab(name){
   Object.entries(pages).forEach(([key,page])=>page.classList.toggle('active',key===name));
   navBtns.forEach(btn=>btn.classList.toggle('active',btn.dataset.tab===name));
-  window.scrollTo(0,0);
+  appShell?.scrollTo(0,0);
   if(name==='ai') setTimeout(()=>document.getElementById('aiInput').focus(),120);
 }
 document.querySelectorAll('[data-tab]').forEach(btn=>btn.addEventListener('click',()=>openTab(btn.dataset.tab)));
